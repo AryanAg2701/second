@@ -2,36 +2,38 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 function App() {
-    const [num, setnum] = useState('')
-    const [purp, setpurp] = useState('')
-    const [club, setclub] = useState('')
+    const [num, setNum] = useState('')
+    const [purp, setPurp] = useState('')
+    const [club, setClub] = useState('')
     const [bookings, setBookings] = useState([])
-    const [reply, setreply] = useState('')
+    const [reply, setReply] = useState('')
 
-    
-
-  useEffect(()=>{show()},[])
-
-  const show = () => {
-    axios.get('http://localhost:5000/api/bookings')
-        .then(response => {
-            setBookings(response.data)
-        })
-        .catch(error => {
-            setreply('Error fetching bookings')
-        })
-}
-  const details = () => {
-        axios.post('http://localhost:5000/api/room', { num, purp, club })
+    const fetchBookings = () => {
+        axios.get('http://localhost:5000/api/bookings')
             .then(response => {
-                setreply(response.data.reply)
-                setnum('')
-                setpurp('')
-                setclub('')
-                show()
+                setBookings(response.data)
             })
             .catch(error => {
-                setreply('Error booking room')
+                setReply('Error fetching bookings')
+            })
+    }
+
+    useEffect(() => {
+        fetchBookings()
+    }, [])
+
+    const bookRoom = () => {
+        const bookingDetails = { num, purp, club }
+        axios.post('http://localhost:5000/api/room', bookingDetails)
+            .then(response => {
+                setReply(response.data.message)
+                setNum('')
+                setPurp('')
+                setClub('')
+                fetchBookings()
+            })
+            .catch(error => {
+                setReply('Error booking room')
             })
     }
 
@@ -40,17 +42,30 @@ function App() {
             <h1>Room Booking App</h1>
             <div>
                 <input
-                    type="text" placeholder="Room Number" value={num} onChange={(e) => setnum(e.target.value)}/>
-                <input type="text" placeholder="purp of Booking" value={purp} onChange={(e) => setpurp(e.target.value)}/>
-                <input type="text" placeholder="Club Name" value={club} onChange={(e) => setclub(e.target.value)}/>
-                <button onClick={details}>Book Room</button>
+                    type="text"
+                    placeholder="Room Number"
+                    value={num}
+                    onChange={(e) => setNum(e.target.value)}
+                />
+                <input
+                    type="text"
+                    placeholder="Purpose of Booking"
+                    value={purp}
+                    onChange={(e) => setPurp(e.target.value)}
+                />
+                <input
+                    type="text"
+                    placeholder="Club Name"
+                    value={club}
+                    onChange={(e) => setClub(e.target.value)}
+                />
+                <button onClick={bookRoom}>Book Room</button>
             </div>
             <p>{reply}</p>
-            <div>hello</div>
             <ul>
                 {bookings.map(booking => (
                     <li key={booking.id}>
-                        Room {booking.num} {booking.purp}  {booking.club}
+                        Room {booking.num} - {booking.purp} ({booking.club})
                     </li>
                 ))}
             </ul>
