@@ -46,6 +46,7 @@ function App() {
                 <button onClick={details}>Book Room</button>
             </div>
             <p>{reply}</p>
+            <div>hello</div>
             <ul>
                 {bookings.map(booking => (
                     <li key={booking.id}>
