@@ -38,6 +38,19 @@ function App() {
         setReply("Error booking room");
       });
   };
+  const delroom=(id)=>{
+    axios
+      .delete(`http://localhost:5000/api/room/${id}`)
+      .then((reponse)=>{
+        setReply(reponse.data.message)
+        fetchBookings()
+        
+        fetchBookings()
+      })
+      .catch((error)=>{
+        setReply("Error in deleting")
+      })
+  }
 
   return (
     <div className="App">
@@ -67,7 +80,7 @@ function App() {
       <ul>
         {bookings.map((booking) => (
           <li key={booking.id}>
-            Room {booking.num} - {booking.purp} ({booking.club})
+            Room {booking.num} - {booking.purp} {booking.club} <button onClick={()=>delroom(booking.id)}>Delete</button>
           </li>
         ))}
       </ul>

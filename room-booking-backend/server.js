@@ -28,6 +28,12 @@ app.get("/api/bookings", (req, res) => {
   res.status(200).json(bookings);
 });
 
+app.delete('/api/room/:id', (req, res) => {
+  const { id } = req.params
+  bookings = bookings.filter(booking => booking.id !== id)
+  res.status(200).json({ message: 'Booking deleted successfully' })
+})
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
