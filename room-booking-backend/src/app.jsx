@@ -77,10 +77,11 @@ function App() {
         <button onClick={bookRoom}>Book Room</button>
       </div>
       <p>{reply}</p>
+      <a href="">Click me!!</a>
       <ul>
         {bookings.map((booking) => (
           <li key={booking.id}>
-            Room {booking.num} - {booking.purp} {booking.club} <button onClick={()=>delroom(booking.id)}>Delete</button>
+            Room : {booking.num} - {booking.purp} - {booking.club} <button onClick={()=>delroom(booking.id)}>Delete</button>
           </li>
         ))}
       </ul>
